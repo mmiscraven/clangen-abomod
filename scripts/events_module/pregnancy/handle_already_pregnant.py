@@ -434,23 +434,6 @@ def _handle_main_birth_event(
             coparenting_outcome = "negative"
             event_list.append(choice(events["birth"]["both_unmated_neg"]))
 
-    # SAME-SEX RELATIONSHIP AFFAIR
-    elif (
-        not get_clan_setting("same sex birth")
-        and any(
-            Cat.fetch_cat(mate_id) and Cat.fetch_cat(mate_id).gender == "female"
-            for mate_id in cat.mate
-        )
-        and other_cat.ID not in cat.mate
-    ):
-        involved_cats.append(other_cat.ID)
-        cat_dict["r_c"] = other_cat
-        chosen_mate = _get_cheated_mate(cat)
-        if chosen_mate:
-            cat_dict["mc_mate"] = chosen_mate
-            involved_cats.append(chosen_mate.ID)
-        event_list.append(choice(events["birth"]["affair_mated_samesex"]))
-
     # MAIN CAT CHEATED ON MATE
     elif len(cat.mate) > 0 and other_cat.ID not in cat.mate and not other_cat.dead:
         living_mate = _get_cheated_mate(cat)

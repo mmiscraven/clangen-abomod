@@ -116,10 +116,9 @@ def updated_create_new_cat(
     # GENDER
     gender = option_dict.get("gender", None)
     if gender == "can_birth":
-        if not get_clan_setting("same sex birth"):
-            gender = "female"
-        else:
-            gender = None
+        gender = "female"
+    else:
+        gender = None
 
     # CREATE CATS
     new_cats = []

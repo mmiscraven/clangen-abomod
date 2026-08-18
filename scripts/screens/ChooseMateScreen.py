@@ -7,6 +7,7 @@ import pygame_gui.elements
 from scripts.cat.cats import Cat
 from scripts.cat_relations.inheritance2 import inheritance_db
 from scripts.game_structure import image_cache
+from scripts.events_module.pregnancy.check_parents import can_have_kits_together
 from ..config import get_config
 from ..ui.elements.sprite_button import UISpriteButton
 from ..ui.elements.image_button import UIImageButton
@@ -1064,26 +1065,23 @@ class ChooseMateScreen(Screens):
             object_id="@buttonstyles_squoval",
         )
 
-        if (
-            not get_clan_setting("same sex birth")
-            and self.the_cat.gender == self.selected_cat.gender
-        ):
+        if not can_have_kits_together(self.the_cat, self.selected_cat):
             warning_rect = ui_scale(pygame.Rect((0, 0), (160, 45)))
             warning_rect.bottomleft = ui_scale_offset((0, -5))
             self.selected_cat_elements[
                 "no kit warning"
-            ] = pygame_gui.elements.UITextBox(
-                "screens.choose_mate.no_kit_warning",
-                warning_rect,
-                object_id=get_text_box_theme(
-                    "#text_box_22_horizcenter_vertcenter_spacing_95"
-                ),
-                anchors={
-                    "centerx": "centerx",
-                    "bottom": "bottom",
-                    "bottom_target": self.toggle_mate,
-                },
-            )
+                ] = pygame_gui.elements.UITextBox(
+                    "screens.choose_mate.no_kit_warning",
+                    warning_rect,
+                    object_id=get_text_box_theme(
+                        "#text_box_22_horizcenter_vertcenter_spacing_95"
+                    ),
+                    anchors={
+                        "centerx": "centerx",
+                        "bottom": "bottom",
+                        "bottom_target": self.toggle_mate,
+                    },
+                )
             del warning_rect
 
     def draw_compatible_line_affection(self):
@@ -1193,8 +1191,7 @@ class ChooseMateScreen(Screens):
             and (not self.single_only or not i.mate)
             and (
                 not self.have_kits_only
-                or get_clan_setting("same sex birth")
-                or i.gender != self.the_cat.gender
+                or can_have_kits_together(self.the_cat, i)
             )
         ]
 

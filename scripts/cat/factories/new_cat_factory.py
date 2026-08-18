@@ -46,7 +46,10 @@ class NewCatFactory(BaseCatFactory, ABC):
         )
 
         gender_dict = cls._get_random_gender_and_genderalign(
-            age, sex=overrides.get("gender"), genderalign=overrides.get("genderalign"), secondary_sex=overrides.get("secondary_sex"))
+            age, (overrides.get("parent1"), overrides.get("parent2")),
+            sex=overrides.get("gender"),
+            genderalign=overrides.get("genderalign"),
+            secondary_sex=overrides.get("secondary_sex"))
 
         if pelt := overrides.get("pelt"):
             if not isinstance(pelt, Pelt):
@@ -237,23 +240,64 @@ class NewCatFactory(BaseCatFactory, ABC):
         return age, moons, status
 
     @classmethod
-    def _get_random_secondary_sex(cls, chance):
-        if chance <= 30:
+    def _determine_secondary_sex(cls, parents: tuple = ()):
+        parents_secondary_sex = [
+            p.secondary_sex
+            for p in parents
+            if p is not None
+        ]
+
+        if not parents_secondary_sex:
+            chances = (30, 60, 10)
+
+        # One known birth parent
+        elif len(parents_secondary_sex) == 1:
+            parent_sex = parents_secondary_sex[0]
+
+            single_parent_chances = {
+                "alpha": (50, 30, 10),
+                "beta": (10, 80, 10),
+                "omega": (10, 60, 30),
+            }
+
+            chances = single_parent_chances[parent_sex]
+
+        # Two known birth parents
+        else:
+            parent_pair = tuple(sorted(parents_secondary_sex[:2]))
+
+            pair_chances = {
+                ("alpha", "alpha"): (70, 20, 10),
+                ("alpha", "beta"): (40, 50, 10),
+                ("alpha", "omega"): (40, 40, 20),
+                ("beta", "beta"): (10, 80, 10),
+                ("beta", "omega"): (10, 70, 20),
+                ("omega", "omega"): (10, 50, 40),
+            }
+
+            chances = pair_chances[parent_pair]
+
+        alpha_chance, beta_chance, _ = chances
+
+        chance = cls.rng.randint( 1,100)
+
+        if chance <= alpha_chance:
             return "alpha"
-        elif chance <= 90:
+        elif chance <= alpha_chance + beta_chance:
             return "beta"
         else:
-            return "omega"   
+            return "omega"
 
     @classmethod
     @abstractmethod
-    def _get_random_gender_and_genderalign(cls, age, sex, genderalign, secondary_sex) -> dict:
+    def _get_random_gender_and_genderalign(cls, age, parents, sex, genderalign, secondary_sex) -> dict:
 
         secondary_sex = (
-                    secondary_sex
-                    if secondary_sex
-                    else cls._get_random_secondary_sex(cls.rng.randint(1, 100)
-                    ))
+            secondary_sex
+            if secondary_sex
+            else cls._determine_secondary_sex(
+                tuple(Cat.fetch_cat(i) for i in parents if i))
+        )
         
         gender = {
             "sex": sex if sex else cls.rng.choice(("male", "female")),

@@ -106,7 +106,7 @@ def create_new_cat_block(
         gender = "male"
     elif "female" in attribute_list:
         gender = "female"
-    elif "can_birth" in attribute_list and not get_clan_setting("same sex birth"):
+    elif "can_birth" in attribute_list:
         gender = "female"
     else:
         gender = None

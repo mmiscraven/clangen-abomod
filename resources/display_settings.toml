@@ -64,8 +64,6 @@
     [clan.relation]
         affair = false
         "unmated parentage" = false
-        "same sex birth" = false
-        "same sex adoption" = false
         "single parentage" = false
         "romantic with former mentor" = true
         "first cousin mates" = false
@@ -121,12 +119,3 @@
         "show fav" = [
             false, true
         ]
-
-    # Certain clan settings can be nested, so there's a new "nests" key.
-    # FORMAT:
-    # [clan.nests]
-    #   [clan.nests."section_name"."setting_name"]
-    #       required_setting_name = required_value
-    [clan.nests]
-            [clan.nests.relation."same sex adoption"]
-                "same sex birth" = false

@@ -3,6 +3,7 @@ from random import random
 from scripts.cat.cats import Cat
 from scripts.clan_package.settings import get_clan_setting
 from scripts.events_module.pregnancy.check_parents import (
+    can_have_kits_together,
     check_if_can_have_kits,
     get_second_parent,
     check_second_parent,
@@ -65,9 +66,9 @@ def handle_having_kits(cat: Cat):
         return
 
     # check if the second_parent is not none and if they also can have kits
-    can_have_kits, kits_are_adopted = check_second_parent(cat, second_parent)
-    if second_parent and not can_have_kits:
-        return
+    kits_are_adopted = (
+        second_parent and not can_have_kits_together(cat, second_parent)
+    )
 
     chance = get_balanced_kit_chance(cat, second_parent, is_affair)
 

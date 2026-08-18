@@ -394,21 +394,11 @@ class ClanSettingsScreen(Screens):
             manager=MANAGER,
         )
 
-        nests = settings_dict["nests"].get(self.sub_menu)
-
         n = 0
         for name, _ in settings_dict[self.sub_menu].items():
             disabled = False
             text_x_val = 225
             check_x_val = 170
-            if nests and nests.get(name):
-                nested_settings = nests.get(name)
-                text_x_val += 25
-                check_x_val += 25
-                disabled = not all(
-                    required == get_clan_setting(setting, default=not required)
-                    for setting, required in nested_settings.items()
-                )
 
             self.checkboxes_text[name] = pygame_gui.elements.UITextBox(
                 f"settings.{name}",

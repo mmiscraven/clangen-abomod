@@ -537,6 +537,34 @@ def get_balanced_kit_chance(first_parent: Cat, second_parent: Cat, is_affair) ->
                 buff += 0.3
             inverse_chance = int(inverse_chance * buff)
 
+    # SECONDARY SEX
+    # - decrease / increase depending on the cats secondary sex
+    secondary_sex_buff = 0.75
+    secondary_sex_debuff = 1.25
+
+    # Pregnancy chance modifiers for first parent
+    if first_parent.secondary_sex == "omega":
+        # Omegas are more likely to become pregnant
+        inverse_chance = int(inverse_chance * secondary_sex_buff)
+    elif (
+        first_parent.secondary_sex == "alpha"
+        and first_parent.gender == "female"
+    ):
+        # Alpha females are less likely to become pregnant
+        inverse_chance = int(inverse_chance * secondary_sex_debuff)
+
+    # Impregnation chance modifiers for second parent
+    if second_parent:
+        if second_parent.secondary_sex == "alpha":
+            # All alphas are more likely to impregnate another cat
+            inverse_chance = int(inverse_chance * secondary_sex_buff)
+        elif (
+            second_parent.secondary_sex == "omega"
+            and second_parent.gender == "male"
+        ):
+            # Omega males are less likely to impregnate another cat
+            inverse_chance = int(inverse_chance * secondary_sex_debuff)
+
     # RELATIONSHIP
     # - decrease the inverse chance if the cats are getting along well
     if second_parent:
