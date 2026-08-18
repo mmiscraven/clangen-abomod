@@ -157,7 +157,7 @@ class Cat:
         Initialize the cat.
 
         :param ID: Cat's ID value
-        :param gender_dict: Cat's sex & gender (and pronouns if loading from save)
+        :param gender_dict: Cat's sex & gender & secondary sex (and pronouns if loading from save)
         :param pelt: Pelt object
         :param moons: Cat's age in moons
         :param status: Status object
@@ -196,6 +196,7 @@ class Cat:
 
         self.gender: Literal["male", "female"] = gender_dict["sex"]
         self.genderalign = gender_dict["genderalign"]
+        self.secondary_sex: Literal["alpha", "beta", "omega"] = gender_dict["secondary_sex"]
         if gender_dict.get("pronouns"):  # pronouns are lazy-loaded for new cats
             self.pronouns = gender_dict.get("pronouns")
 
@@ -480,6 +481,10 @@ class Cat:
     @property
     def gender_string(self):
         return i18n.t(f"general.{self.gender}")
+
+    @property
+    def secondary_sex_string(self):
+        return i18n.t(f"{self.secondary_sex}")
 
     def is_alive(self):
         """Check if this cat is alive
@@ -2873,7 +2878,7 @@ class Cat:
 
         cat_ob = Cat(
             ID=cat_info["ID"],
-            gender_dict=GenderDict(sex=None, genderalign=None),
+            gender_dict=GenderDict(sex=None, genderalign=None, secondary_sex=None),
             pelt=None,
             moons=cat_info["moons"],
             status=status,
@@ -3095,7 +3100,7 @@ class Cat:
         if make_clan:
             return "\n".join(
                 [
-                    self.genderalign_string,
+                    self.genderalign_string + i18n.t(f" ({self.secondary_sex})"),
                     i18n.t(
                         (
                             f"general.{self.age}"
@@ -3128,7 +3133,7 @@ class Cat:
             return " - ".join(
                 [
                     i18n.t("general.moons_age", count=self.moons),
-                    self.genderalign_string,
+                    self.genderalign_string + i18n.t(f" ({self.secondary_sex})"),
                     i18n.t(f"cat.personality.{self.personality.trait}"),
                 ]
             )
@@ -3137,7 +3142,7 @@ class Cat:
             [
                 i18n.t("general.moons_age", count=self.moons),
                 i18n.t(f"general.{self.status.rank.lower()}", count=1),
-                self.genderalign_string,
+                self.genderalign_string + i18n.t(f" ({self.secondary_sex})"),
                 i18n.t(f"cat.personality.{self.personality.trait}"),
                 self.skills.skill_string(short=True),
             ]
@@ -3165,6 +3170,7 @@ class Cat:
                 "specsuffix_hidden": self.name.specsuffix_hidden,
                 "gender": self.gender,
                 "gender_align": self.genderalign,
+                "secondary_sex": self.secondary_sex,
                 "pronouns": (
                     self._pronouns
                     if self._pronouns is not None

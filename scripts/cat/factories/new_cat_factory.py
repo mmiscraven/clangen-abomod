@@ -20,7 +20,7 @@ from scripts.cat.skills import CatSkills
 from scripts.cat.status import Status
 from scripts.game_structure import game, constants
 
-BASE_RNG = random.Random
+BASE_RNG = random.Random # Return random number between 0.0 and 1.0:
 
 
 class NewCatFactory(BaseCatFactory, ABC):
@@ -46,8 +46,7 @@ class NewCatFactory(BaseCatFactory, ABC):
         )
 
         gender_dict = cls._get_random_gender_and_genderalign(
-            age, sex=overrides.get("gender"), genderalign=overrides.get("genderalign")
-        )
+            age, sex=overrides.get("gender"), genderalign=overrides.get("genderalign"), secondary_sex=overrides.get("secondary_sex"))
 
         if pelt := overrides.get("pelt"):
             if not isinstance(pelt, Pelt):
@@ -238,12 +237,31 @@ class NewCatFactory(BaseCatFactory, ABC):
         return age, moons, status
 
     @classmethod
+    def _get_random_secondary_sex(cls, chance):
+        if chance <= 30:
+            return "alpha"
+        elif chance <= 90:
+            return "beta"
+        else:
+            return "omega"   
+
+    @classmethod
     @abstractmethod
-    def _get_random_gender_and_genderalign(cls, age, sex, genderalign) -> dict:
+    def _get_random_gender_and_genderalign(cls, age, sex, genderalign, secondary_sex) -> dict:
+
+        secondary_sex = (
+                    secondary_sex
+                    if secondary_sex
+                    else cls._get_random_secondary_sex(cls.rng.randint(1, 100)
+                    ))
+        
         gender = {
             "sex": sex if sex else cls.rng.choice(("male", "female")),
+            "secondary_sex": secondary_sex
         }
         gender["genderalign"] = genderalign if genderalign else gender["sex"]
+
+        
 
         if genderalign and "trans" in genderalign:
             gender["sex"] = "female" if genderalign == "trans male" else "male"

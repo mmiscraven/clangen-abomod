@@ -29,7 +29,7 @@ class FadedCatFactory(BaseCatFactory):
 
         cat = Cat(
             ID=kwargs["ID"],
-            gender_dict=GenderDict(sex=None, genderalign=None),
+            gender_dict=GenderDict(sex=None, genderalign=None, secondary_sex=None),
             pelt=None,
             moons=kwargs["moons"],
             status=status,

@@ -19,6 +19,7 @@ class CatTogglesDict(TypedDict):
 class GenderDict(TypedDict, total=False):
     sex: Literal["male", "female"]
     genderalign: str
+    secondary_sex: Literal["alpha", "beta", "omega"]
     pronouns: Optional[Dict]
 
 

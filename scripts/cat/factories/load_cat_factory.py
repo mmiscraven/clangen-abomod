@@ -46,6 +46,7 @@ class LoadCatFactory(BaseCatFactory):
         gender = GenderDict(
             sex=kwargs["gender"],
             genderalign=kwargs.get("gender_align", kwargs["gender"]),
+            secondary_sex=kwargs.get("secondary_sex", "beta"),
             pronouns=kwargs.get("pronouns"),
         )
 

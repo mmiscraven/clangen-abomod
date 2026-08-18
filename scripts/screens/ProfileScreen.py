@@ -743,12 +743,12 @@ class ProfileScreen(Screens):
         output = ""
         # SEX/GENDER
         if the_cat.genderalign is None or the_cat.genderalign == the_cat.gender:
-            output += the_cat.gender_string
+            output += the_cat.gender_string + i18n.t(f" ({the_cat.secondary_sex})")
         else:
-            output += the_cat.genderalign_string
+            output += the_cat.genderalign_string + i18n.t(f" ({the_cat.secondary_sex})")
         # NEWLINE ----------
         output += "\n"
-
+            
         # AGE
         if the_cat.age == CatAge.KITTEN:
             age = i18n.t("general.kitten_profile")
