@@ -32,6 +32,7 @@
             "scarred": "",
             "fur_length": "",
             "pattern": ["color"],
+            "secondary_sex": "",
             "cat": "",
             "vitiligo": "",
             "amputation": ""
@@ -43,11 +44,11 @@
                 "post_value": ", "
             },
             {
-                "values": [2, 3],
+                "values": [2, 3, 4],
                 "format": " "
             },
             {
-                "values": [4, 5],
+                "values": [5, 6],
                 "format": "list",
                 "pre_value": ", with "
             }

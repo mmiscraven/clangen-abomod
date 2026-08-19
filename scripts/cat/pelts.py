@@ -1416,6 +1416,8 @@ def unpack_appearance_ruleset(cat, rule, short, pelt, color):
         return pelt
     elif rule == "color":
         return color
+    elif rule == "secondary_sex":
+        return f"general.{cat.secondary_sex}"
     elif rule == "cat":
         if cat.genderalign in ("female", "trans female"):
             return "general.she-cat"
