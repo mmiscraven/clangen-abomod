@@ -1356,7 +1356,7 @@ def _describe_pattern(cat, short=False):
     return pelt_name, color_name
 
 
-def _describe_torties(cat, color_name, short=False) -> (str, str):
+def _describe_torties(cat, color_name, short=False) -> (str | str):
     # Calicos and Torties need their own descriptions
     if short:
         # If using short, don't describe the colors of calicos and torties.

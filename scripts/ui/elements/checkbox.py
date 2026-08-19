@@ -74,6 +74,16 @@ class UICheckbox(UIImageButton):
             self.check()
             self.checkmark.show()
 
+    def show(self):
+        super().show()
+
+        if self.checked:
+            self.checkmark.show()
+
+    def hide(self):
+        super().hide()
+        self.checkmark.hide()
+
     def check(self):
         """
         switches the checkbox into the "checked" state
