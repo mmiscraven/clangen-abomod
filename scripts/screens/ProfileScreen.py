@@ -16,6 +16,7 @@ from scripts.game_input import INPUT_ACTION_PRESSED, Action
 from scripts.cat.cats import Cat, BACKSTORIES
 from scripts.clan_resources.freshkill import FRESHKILL_ACTIVE
 from scripts.game_structure import image_cache, game
+from scripts.ui.elements.checkbox import UICheckbox
 from scripts.ui.windows.cruel_locked_action import CruelLockedAction
 from ..ui.elements.modified_image import UIModifiedImage
 from ..ui.elements.text_box_tweaked import UITextBoxTweaked
@@ -1182,18 +1183,16 @@ class ProfileScreen(Screens):
                 self.history_text_box = pygame_gui.elements.UITextBox(
                     "", ui_scale(pygame.Rect((40, 240), (307, 71))), manager=MANAGER
                 )
-                self.no_moons = UIImageButton(
-                    ui_scale(pygame.Rect((52, 514), (34, 34))),
-                    "",
-                    object_id="@unchecked_checkbox",
+                self.no_moons = UICheckbox(
+                    position=(52, 514),
                     tool_tip_text="screens.profile.no_moons_tooltip",
+                    check=False,
                     manager=MANAGER,
                 )
-                self.show_moons = UIImageButton(
-                    ui_scale(pygame.Rect((52, 514), (34, 34))),
-                    "",
-                    object_id="@checked_checkbox",
+                self.show_moons = UICheckbox(
+                    position=(52, 514),
                     tool_tip_text="screens.profile.show_moons_tooltip",
+                    check=True,
                     manager=MANAGER,
                 )
 
@@ -2363,20 +2362,20 @@ class ProfileScreen(Screens):
 
                 self.no_moons.kill()
                 self.show_moons.kill()
-                self.no_moons = UIImageButton(
-                    ui_scale(pygame.Rect((52, 514), (34, 34))),
-                    "",
-                    object_id="@unchecked_checkbox",
-                    tool_tip_text="screens.profile.show_moons_tooltip",
-                    manager=MANAGER,
-                )
-                self.show_moons = UIImageButton(
-                    ui_scale(pygame.Rect((52, 514), (34, 34))),
-                    "",
-                    object_id="@checked_checkbox",
+
+                self.no_moons = UICheckbox(
+                    position=(52, 514),
                     tool_tip_text="screens.profile.no_moons_tooltip",
+                    check=False,
                     manager=MANAGER,
                 )
+                self.show_moons = UICheckbox(
+                    position=(52, 514),
+                    tool_tip_text="screens.profile.no_moons_tooltip",
+                    check=True,
+                    manager=MANAGER,
+                )
+
                 if switch_get_value(Switch.show_history_moons):
                     self.no_moons.kill()
                 else:
@@ -2407,11 +2406,10 @@ class ProfileScreen(Screens):
                     tool_tip_text="screens.profile.text_entry_help_tooltip",
                 )
                 if self.editing_notes is True:
-                    self.save_text = UIImageButton(
-                        ui_scale(pygame.Rect((52, 514), (34, 34))),
-                        "",
-                        object_id="@unchecked_checkbox",
+                    self.save_text = UICheckbox(
+                        position=(52, 514),
                         tool_tip_text="screens.profile.text_entry_help_tooltip",
+                        check=True,
                         manager=MANAGER,
                     )
 
@@ -2422,11 +2420,10 @@ class ProfileScreen(Screens):
                         manager=MANAGER,
                     )
                 else:
-                    self.edit_text = UIImageButton(
-                        ui_scale(pygame.Rect((52, 514), (34, 34))),
-                        "",
-                        object_id="@checked_checkbox_smalltooltip",
+                    self.edit_text = UICheckbox(
+                        position=(52, 514),
                         tool_tip_text="screens.profile.text_entry_edit_tooltip",
+                        check=False,
                         manager=MANAGER,
                     )
 

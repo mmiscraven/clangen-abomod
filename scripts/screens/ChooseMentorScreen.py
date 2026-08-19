@@ -6,8 +6,8 @@ import pygame_gui.elements
 
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
+from scripts.ui.elements.checkbox import UICheckbox
 from ..ui.elements.sprite_button import UISpriteButton
-from ..ui.elements.image_button import UIImageButton
 from ..ui.elements.surface_image_button import UISurfaceImageButton
 from ..ui.theme import get_text_box_theme
 from ..events_module.text_adjust import shorten_text_to_fit
@@ -271,12 +271,12 @@ class ChooseMentorScreen(Screens):
             container=self.filter_container,
         )
         checkbox_y += checkbox_spacing
-        self.checkboxes["show_no_current_app"] = UIImageButton(
-            ui_scale(pygame.Rect((checkbox_x, checkbox_y + 10), (34, 34))),
-            "",
-            object_id="@unchecked_checkbox",
+        self.checkboxes["show_no_current_app"] = UICheckbox(
+            position=(checkbox_x, checkbox_y + 10),
             container=self.filter_container,
             tool_tip_text="screens.choose_mentor.no_current_apprentices_tooltip",
+            check=False,
+            manager=MANAGER,
         )
         checkbox_y += checkbox_spacing
 
@@ -287,13 +287,14 @@ class ChooseMentorScreen(Screens):
             container=self.filter_container,
         )
         checkbox_y += checkbox_spacing
-        self.checkboxes["show_no_former_app"] = UIImageButton(
-            ui_scale(pygame.Rect((checkbox_x, checkbox_y), (34, 34))),
-            "",
-            object_id="@unchecked_checkbox",
+        self.checkboxes["show_no_former_app"] = UICheckbox(
+            position=(checkbox_x, checkbox_y),
             container=self.filter_container,
             tool_tip_text="screens.choose_mentor.no_former_apprentices_tooltip",
+            check=False,
+            manager=MANAGER,
         )
+
         self.update_apprentice()  # Draws the current apprentice
         self.update_selected_cat()  # Updates the image and details of selected cat
         self.update_cat_list()
@@ -620,13 +621,13 @@ class ChooseMentorScreen(Screens):
         ]
         for name, checkbox, is_checked in checkboxes:
             checkbox.kill()
-            theme = "@checked_checkbox" if is_checked else "@unchecked_checkbox"
-            self.checkboxes[name] = UIImageButton(
-                relative_rect=checkbox.relative_rect,
-                text="",
-                object_id=theme,
+
+            self.checkboxes[name] = UICheckbox(
+                position=checkbox.relative_rect.topleft,
                 container=self.filter_container,
                 tool_tip_text=checkbox.tool_tip_text,
+                check= is_checked,
+                manager=MANAGER,
             )
 
     def get_valid_mentors(self):

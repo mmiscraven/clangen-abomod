@@ -8,6 +8,7 @@ from scripts.cat.cats import Cat
 from scripts.cat_relations.inheritance2 import inheritance_db
 from scripts.game_structure import image_cache
 from scripts.events_module.pregnancy.check_parents import can_have_kits_together
+from scripts.ui.elements.checkbox import UICheckbox
 from ..config import get_config
 from ..ui.elements.sprite_button import UISpriteButton
 from ..ui.elements.image_button import UIImageButton
@@ -512,16 +513,11 @@ class ChooseMateScreen(Screens):
         if "kits_selected_pair" in self.checkboxes:
             self.checkboxes["kits_selected_pair"].kill()
 
-        if self.kits_selected_pair:
-            theme = "@checked_checkbox"
-        else:
-            theme = "@unchecked_checkbox"
-
-        self.checkboxes["kits_selected_pair"] = UIImageButton(
-            ui_scale(pygame.Rect((553, 62), (34, 34))),
-            "",
-            object_id=theme,
+        self.checkboxes["kits_selected_pair"] = UICheckbox(
+            position=(553, 62),
             container=self.offspring_container,
+            check= self.kits_selected_pair,
+            manager=MANAGER,
         )
 
         self.update_offspring_container_page()
@@ -638,31 +634,21 @@ class ChooseMateScreen(Screens):
         if "single_only" in self.checkboxes:
             self.checkboxes["single_only"].kill()
 
-        if self.single_only:
-            theme = "@checked_checkbox"
-        else:
-            theme = "@unchecked_checkbox"
-
-        self.checkboxes["single_only"] = UIImageButton(
-            ui_scale(pygame.Rect((553, 42), (34, 34))),
-            "",
-            object_id=theme,
+        self.checkboxes["single_only"] = UICheckbox(
+            position=(553, 42),
             container=self.potential_container,
+            check= self.single_only,
+            manager=MANAGER,
         )
 
         if "have_kits_only" in self.checkboxes:
             self.checkboxes["have_kits_only"].kill()
 
-        if self.have_kits_only:
-            theme = "@checked_checkbox"
-        else:
-            theme = "@unchecked_checkbox"
-
-        self.checkboxes["have_kits_only"] = UIImageButton(
-            ui_scale(pygame.Rect((553, 127), (34, 34))),
-            "",
-            object_id=theme,
+        self.checkboxes["have_kits_only"] = UICheckbox(
+            position=(553, 127),
             container=self.potential_container,
+            check= self.have_kits_only,
+            manager=MANAGER,
         )
 
         self.all_potential_mates = self.get_list_chunks(self.get_valid_mates(), 24)

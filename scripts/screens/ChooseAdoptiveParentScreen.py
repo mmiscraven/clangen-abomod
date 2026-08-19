@@ -7,6 +7,7 @@ import pygame_gui.elements
 from scripts.cat.cats import Cat
 from scripts.game_structure import image_cache
 from scripts.game_structure.propagating_thread import PropagatingThread
+from scripts.ui.elements.checkbox import UICheckbox
 from ..ui.elements.sprite_button import UISpriteButton
 from ..ui.elements.image_button import UIImageButton
 from ..ui.elements.surface_image_button import UISurfaceImageButton
@@ -492,16 +493,11 @@ class ChooseAdoptiveParentScreen(Screens):
         if "mates_current_parents" in self.checkboxes:
             self.checkboxes["mates_current_parents"].kill()
 
-        if self.mates_current_parents:
-            theme = "@checked_checkbox"
-        else:
-            theme = "@unchecked_checkbox"
-
-        self.checkboxes["mates_current_parents"] = UIImageButton(
-            ui_scale(pygame.Rect((553, 56), (34, 34))),
-            "",
-            object_id=theme,
+        self.checkboxes["mates_current_parents"] = UICheckbox(
+            position=(553, 56),
             container=self.potential_container,
+            check=self.mates_current_parents,
+            manager=MANAGER,
         )
 
         self.all_potential_parents = self.get_list_chunks(
@@ -511,16 +507,11 @@ class ChooseAdoptiveParentScreen(Screens):
         if "unrelated_only" in self.checkboxes:
             self.checkboxes["unrelated_only"].kill()
 
-        if self.unrelated_only:
-            theme = "@checked_checkbox"
-        else:
-            theme = "@unchecked_checkbox"
-
-        self.checkboxes["unrelated_only"] = UIImageButton(
-            ui_scale(pygame.Rect((553, 131), (34, 34))),
-            "",
-            object_id=theme,
+        self.checkboxes["unrelated_only"] = UICheckbox(
+            position=(553, 131),
             container=self.potential_container,
+            check=self.unrelated_only,
+            manager=MANAGER,
         )
 
         self.all_potential_parents = self.get_list_chunks(

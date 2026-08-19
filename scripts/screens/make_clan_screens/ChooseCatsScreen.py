@@ -965,10 +965,10 @@ class ChooseCatsScreen(MakeClanScreenBase):
         )
 
     def _get_cat_tooltip_string(self, cat: Cat):
-        """Get tooltip for cat. Tooltip displays name, sex, age group, and trait."""
+        """Get tooltip for cat. Tooltip displays name, sex, secondary sex, age group, and trait."""
         name = (
             cat.name
             if self.clan_info.leader != cat
             else cat.name.get_specsuffix_name(CatRank.LEADER)
         )
-        return f"<b>{name}</b><br>{cat.genderalign_string}<br>{i18n.t('general.' + cat.age, count=1)}<br>{i18n.t('cat.personality.' + cat.personality.trait)}<br>{cat.skills.skill_string(short=True)}"
+        return f"<b>{name}</b><br>{cat.genderalign_string} ({cat.secondary_sex_string})<br>{i18n.t('general.' + cat.age, count=1)}<br>{i18n.t('cat.personality.' + cat.personality.trait)}<br>{cat.skills.skill_string(short=True)}"
